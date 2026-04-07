@@ -22,6 +22,21 @@ lnk "$DOTFILES_DIR/.lazygit.yml" .lazygit.yml
 mkdir -p "$HOME/.config/ghostty"
 lnk "$DOTFILES_DIR/.config/ghostty/config" "$HOME/.config/ghostty/config"
 
+# Claude global config and instructions
+lnk "$DOTFILES_DIR/.claude.json" .claude.json
+mkdir -p "$HOME/.claude"
+lnk "$DOTFILES_DIR/.config/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+
+# Kiro MCP config
+mkdir -p "$HOME/.kiro/settings"
+lnk "$DOTFILES_DIR/.config/kiro/settings/mcp.json" "$HOME/.kiro/settings/mcp.json"
+
+# VS Code / GitHub Copilot global MCP and instructions
+VSCODE_USER_DIR="$HOME/.config/Code/User"
+mkdir -p "$VSCODE_USER_DIR/prompts"
+lnk "$DOTFILES_DIR/.config/vscode/mcp.json" "$VSCODE_USER_DIR/mcp.json"
+lnk "$DOTFILES_DIR/.config/vscode/prompts/agent-browser.instructions.md" "$VSCODE_USER_DIR/prompts/agent-browser.instructions.md"
+
 # Install ghostty-quake toggle script
 mkdir -p "$HOME/.local/bin"
 lnk "$DOTFILES_DIR/.local/bin/ghostty-quake" "$HOME/.local/bin/ghostty-quake"
