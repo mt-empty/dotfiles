@@ -1,2 +1,11 @@
 # macOS-specific Zsh configuration
-# Add macOS-specific aliases, exports, or functions here
+
+# Homebrew
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Platform-specific aliases
+alias ll='ls -lAhG'  # -G for colour on macOS (no --color=auto)

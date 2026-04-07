@@ -1,2 +1,7 @@
 # Ubuntu-specific Zsh configuration
-# Add Ubuntu-specific aliases, exports, or functions here
+
+# PATH additions
+export PATH="$HOME/.local/bin:$PATH"
+
+# Platform-specific aliases
+alias ll='ls -lAh --color=auto'

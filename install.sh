@@ -4,22 +4,27 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$HOME"
 
+# Helper: create symlink with logging
+lnk()  { echo "  symlink: $1 → $2"; ln -sf  "$1" "$2"; }
+lnkd() { echo "  symlink: $1/ → $2/"; ln -snf "$1" "$2"; }
+
 # Symlink dotfiles
-ln -sf "$DOTFILES_DIR/.zshrc" .zshrc
-ln -sf "$DOTFILES_DIR/.vimrc" .vimrc
-ln -sf "$DOTFILES_DIR/.gitconfig" .gitconfig
-ln -sf "$DOTFILES_DIR/.tmux.conf" .tmux.conf
-ln -sf "$DOTFILES_DIR/.fzf.zsh" .fzf.zsh
-ln -sf "$DOTFILES_DIR/.bat.conf" .bat.conf
-ln -sf "$DOTFILES_DIR/.lazygit.yml" .lazygit.yml
+echo "Linking dotfiles..."
+lnk "$DOTFILES_DIR/.zshrc" .zshrc
+lnk "$DOTFILES_DIR/.vimrc" .vimrc
+lnk "$DOTFILES_DIR/.gitconfig" .gitconfig
+lnk "$DOTFILES_DIR/.tmux.conf" .tmux.conf
+lnk "$DOTFILES_DIR/.fzf.zsh" .fzf.zsh
+lnk "$DOTFILES_DIR/.bat.conf" .bat.conf
+lnk "$DOTFILES_DIR/.lazygit.yml" .lazygit.yml
 
 # Symlink app configs under .config/
 mkdir -p "$HOME/.config/ghostty"
-ln -sf "$DOTFILES_DIR/.config/ghostty/config" "$HOME/.config/ghostty/config"
+lnk "$DOTFILES_DIR/.config/ghostty/config" "$HOME/.config/ghostty/config"
 
 # Install ghostty-quake toggle script
 mkdir -p "$HOME/.local/bin"
-ln -sf "$DOTFILES_DIR/.local/bin/ghostty-quake" "$HOME/.local/bin/ghostty-quake"
+lnk "$DOTFILES_DIR/.local/bin/ghostty-quake" "$HOME/.local/bin/ghostty-quake"
 chmod +x "$DOTFILES_DIR/.local/bin/ghostty-quake"
 
 # Register Ctrl+Escape as GNOME custom shortcut for ghostty-quake (GNOME only)
@@ -40,7 +45,7 @@ if command -v dconf > /dev/null && [ -n "${DBUS_SESSION_BUS_ADDRESS-}" ]; then
 fi
 
 # Symlink zshrc.d directory
-ln -snf "$DOTFILES_DIR/zshrc.d" "$HOME/zshrc.d"
+lnkd "$DOTFILES_DIR/zshrc.d" "$HOME/zshrc.d"
 
 # Oh My Zsh install
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
