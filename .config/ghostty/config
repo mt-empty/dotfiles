@@ -1,0 +1,47 @@
+# Ghostty configuration
+
+# Ctrl+Escape: explicitly ignored so it is never forwarded to the shell.
+# This prevents the ;5;27~ escape sequence leaking when Ghostty has focus.
+# The actual quake-toggle is handled externally by ~/.local/bin/ghostty-quake,
+# bound to Ctrl+Escape via a GNOME custom keyboard shortcut.
+# NOTE: toggle_quick_terminal requires wlr-layer-shell-v1 and does not work on GNOME.
+keybind = ctrl+escape=ignore
+
+# Quick terminal appearance
+quick-terminal-position = top
+quick-terminal-screen = main
+quick-terminal-animation-duration = 0.2
+quick-terminal-autohide = true
+
+# ── VS Code / browser-style keybinds ─────────────────────────────────────────
+
+# Copy/paste — match VS Code integrated terminal behaviour:
+#   performable: means ctrl+c only copies when text is selected;
+#   otherwise it falls through as SIGINT (interrupt) as normal.
+keybind = performable:ctrl+c=copy_to_clipboard
+# Paste stays on Ctrl+Shift+V (default) to avoid breaking vim's visual-block mode (Ctrl+V)
+
+# Font zoom — matches browser (Ctrl+= / Ctrl+- / Ctrl+0)
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+zero=reset_font_size
+
+# Find in scrollback — matches browser/VS Code Ctrl+F
+# Trade-off: loses readline forward-char (Ctrl+F). Use arrow key instead.
+keybind = ctrl+f=start_search
+
+# Tabs — browser-style
+keybind = ctrl+t=new_tab
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+# NOTE: ctrl+w=close_surface would match browsers but breaks readline's
+#       delete-word-backward (heavily used in shell). Left as ctrl+shift+w.
+
+# Command palette (VS Code Ctrl+Shift+P) — requires libadwaita 1.5+
+keybind = ctrl+shift+p=toggle_command_palette
+
+# New window
+keybind = ctrl+shift+n=new_window
+
+# Reload config without restarting
+keybind = ctrl+shift+comma=reload_config

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# ghostty-quake: Quake-style toggle for Ghostty on GNOME (Wayland)
+#
+# Bind this to Ctrl+Escape via GNOME Settings > Keyboard > Custom Shortcuts,
+# or run: install.sh (which sets it up via dconf automatically).
+#
+# Behaviour:
+#   - Ghostty not running  → launch it
+#   - Ghostty running, focused → minimize it
+#   - Ghostty running, not focused → raise & focus it
+
+WMCLASS="ghostty"
+
+_gnome_toggle() {
+    gdbus call --session \
+        --dest org.gnome.Shell \
+        --object-path /org/gnome/Shell \
+        --method org.gnome.Shell.Eval \
+        "
+        let wins = global.get_window_actors()
+            .map(a => a.meta_window)
+            .filter(w => w.get_wm_class_instance() === '${WMCLASS}');
+        if (wins.length > 0) {
+            let w = wins[0];
+            if (w.has_focus()) {
+                w.minimize();
+            } else {
+                w.unminimize();
+                w.activate(global.get_current_time());
+            }
+            true;
+        } else {
+            false;
+        }
+        " 2>/dev/null
+}
+
+if pgrep -x ghostty > /dev/null; then
+    # Try the DBus toggle; fall back to simple focus if eval is restricted
+    _gnome_toggle || ghostty
+else
+    ghostty &
+fi
