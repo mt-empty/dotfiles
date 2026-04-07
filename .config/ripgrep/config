@@ -1,0 +1,3 @@
+# ripgrep config (add your customizations here)
+--hidden
+--glob '!.git/'

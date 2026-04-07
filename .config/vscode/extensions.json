@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "github.vscode-pull-request-github",
+        "tamasfe.even-better-toml",
+        "yzhang.markdown-all-in-one"
+    ]
+}
