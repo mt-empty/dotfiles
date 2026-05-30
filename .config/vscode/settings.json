@@ -3,6 +3,9 @@
     "editor.rulers": [80, 120],
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
-    "terminal.integrated.shell.linux": "/usr/bin/zsh",
-    "terminal.integrated.shell.osx": "/bin/zsh"
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "dotfiles.repository": "mt-empty/dotfiles",
+    "dotfiles.targetPath": "~/.dotfiles",  // VS Code remote extension expands ~ here
+    "dotfiles.installCommand": "install_devcontainer.sh"
 }
