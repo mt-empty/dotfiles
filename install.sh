@@ -4,19 +4,31 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$HOME"
 
-# Helper: create symlink with logging
-lnk()  { echo "  symlink: $1 → $2"; ln -sf  "$1" "$2"; }
+# Helper: create symlink with logging. Backs up any real file before replacing it.
+lnk() {
+    if [ -f "$2" ] && [ ! -L "$2" ]; then
+        BACKUP="$2.bak.$(date +%s)"
+        echo "  WARNING: backing up existing file $2 → $BACKUP"
+        mv "$2" "$BACKUP"
+    fi
+    echo "  symlink: $1 → $2"
+    ln -sfn "$1" "$2"
+}
 lnkd() { echo "  symlink: $1/ → $2/"; ln -snf "$1" "$2"; }
 
 # Symlink dotfiles
 echo "Linking dotfiles..."
 lnk "$DOTFILES_DIR/.zshrc" .zshrc
 lnk "$DOTFILES_DIR/.vimrc" .vimrc
+lnk "$DOTFILES_DIR/.inputrc" .inputrc
 lnk "$DOTFILES_DIR/.gitconfig" .gitconfig
 lnk "$DOTFILES_DIR/.tmux.conf" .tmux.conf
 lnk "$DOTFILES_DIR/.fzf.zsh" .fzf.zsh
 lnk "$DOTFILES_DIR/.bat.conf" .bat.conf
-lnk "$DOTFILES_DIR/.lazygit.yml" .lazygit.yml
+mkdir -p "$HOME/.config/lazygit"
+lnk "$DOTFILES_DIR/.lazygit.yml" "$HOME/.config/lazygit/config.yml"
+mkdir -p "$HOME/.config/nvim"
+lnk "$DOTFILES_DIR/.nvimrc" "$HOME/.config/nvim/init.vim"
 
 # Symlink app configs under .config/
 mkdir -p "$HOME/.config/ghostty"
@@ -43,7 +55,7 @@ lnk "$DOTFILES_DIR/.local/bin/ghostty-quake" "$HOME/.local/bin/ghostty-quake"
 chmod +x "$DOTFILES_DIR/.local/bin/ghostty-quake"
 
 # Register Ctrl+Escape as GNOME custom shortcut for ghostty-quake (GNOME only)
-if command -v dconf > /dev/null && [ -n "${DBUS_SESSION_BUS_ADDRESS-}" ]; then
+if command -v dconf > /dev/null && [ -n "${DBUS_SESSION_BUS_ADDRESS-}" ] && [[ "${XDG_CURRENT_DESKTOP:-}" =~ [Gg][Nn][Oo][Mm][Ee] ]]; then
   KBASE="/org/gnome/settings-daemon/plugins/media-keys"
   KPATH="${KBASE}/custom-keybindings/custom-ghostty/"
   # Read existing list and append our entry if not already present
@@ -65,7 +77,10 @@ lnkd "$DOTFILES_DIR/zshrc.d" "$HOME/zshrc.d"
 # Oh My Zsh install
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "Installing Oh My Zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  OMZSCRIPT=$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) \
+    || { echo "ERROR: Failed to download Oh My Zsh installer"; exit 1; }
+  [ -n "$OMZSCRIPT" ] || { echo "ERROR: Oh My Zsh installer download returned empty"; exit 1; }
+  sh -c "$OMZSCRIPT" "" --unattended
 fi
 
 # Set Zsh as default shell

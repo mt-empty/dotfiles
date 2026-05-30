@@ -26,6 +26,10 @@ done
 read -rp "Enter selection: " SELECTION
 
 for i in $SELECTION; do
+  if ! [[ "$i" =~ ^[0-9]+$ ]] || (( i < 1 || i > ${#PACKAGES[@]} )); then
+    echo "Skipping invalid selection: $i (must be 1-${#PACKAGES[@]})"
+    continue
+  fi
   PKG="${PACKAGES[$((i-1))]}"
   echo "Installing $PKG..."
   if [[ "$MANAGER" == "brew" ]]; then

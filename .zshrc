@@ -1,5 +1,5 @@
 # Main Zsh configuration
-export DOTFILES="$HOME/.dotfiles"
+export DOTFILES="$HOME"
 
 # History
 HISTSIZE=50000
