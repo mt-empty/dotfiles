@@ -3,7 +3,7 @@ set -e
 
 
 OS="$(uname)"
-PACKAGES=(git zsh vim neovim fzf gh tealdear acli firefox kiro inav tmux ripgrep bat exa lazygit z fd curl wget jq htop tree node python3 docker gpg ssh)
+PACKAGES=(git zsh vim neovim fzf gh tealdeer acli firefox kiro inav tmux ripgrep bat exa lazygit z fd curl wget jq htop tree node python3 docker gpg ssh)
 
 if [[ "$OS" == "Darwin" ]]; then
   MANAGER="brew"
@@ -33,9 +33,9 @@ for i in $SELECTION; do
   PKG="${PACKAGES[$((i-1))]}"
   echo "Installing $PKG..."
   if [[ "$MANAGER" == "brew" ]]; then
-    brew install "$PKG"
+    brew install "$PKG" || echo "WARNING: failed to install $PKG, continuing..."
   else
-    sudo apt install -y "$PKG"
+    sudo apt install -y "$PKG" || echo "WARNING: failed to install $PKG, continuing..."
   fi
 done
 

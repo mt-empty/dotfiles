@@ -59,15 +59,16 @@ if command -v dconf > /dev/null && [ -n "${DBUS_SESSION_BUS_ADDRESS-}" ] && [[ "
   KBASE="/org/gnome/settings-daemon/plugins/media-keys"
   KPATH="${KBASE}/custom-keybindings/custom-ghostty/"
   # Read existing list and append our entry if not already present
-  EXISTING=$(dconf read "${KBASE}/custom-keybindings" 2>/dev/null || echo "[]")
+  EXISTING=$(dconf read "${KBASE}/custom-keybindings" 2>/dev/null)
+  [ -n "$EXISTING" ] || EXISTING="[]"
   if ! echo "$EXISTING" | grep -q "custom-ghostty"; then
     NEW_LIST=$(echo "$EXISTING" | sed "s|]$|, '${KPATH}']|" | sed "s|\[, |[|")
     [ "$NEW_LIST" = "[]" ] && NEW_LIST="['${KPATH}']"
     dconf write "${KBASE}/custom-keybindings" "$NEW_LIST"
   fi
-  dconf write "${KPATH}name" "'Ghostty Quake'"
-  dconf write "${KPATH}command" "'$HOME/.local/bin/ghostty-quake'"
-  dconf write "${KPATH}binding" "'<Control>Escape'"
+  dconf write "${KPATH}name" "'Ghostty Quake'" || echo "WARNING: Failed to write GNOME shortcut name"
+  dconf write "${KPATH}command" "'$HOME/.local/bin/ghostty-quake'" || echo "WARNING: Failed to write GNOME shortcut command"
+  dconf write "${KPATH}binding" "'<Control>Escape'" || echo "WARNING: Failed to write GNOME shortcut binding"
   echo "GNOME shortcut registered: Ctrl+Escape → ghostty-quake"
 fi
 
@@ -84,8 +85,8 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 fi
 
 # Set Zsh as default shell
-if [ "$SHELL" != "$(command -v zsh)" ]; then
-  chsh -s "$(command -v zsh)"
+if [ "$(basename "$SHELL")" != "zsh" ]; then
+  chsh -s "$(command -v zsh)" || echo "WARNING: chsh failed — set your shell to zsh manually."
   echo "Default shell changed to Zsh. Please restart your terminal."
 fi
 

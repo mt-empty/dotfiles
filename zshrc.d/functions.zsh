@@ -16,7 +16,7 @@ extract() {
     *.bz2)          bunzip2 "$1" ;;
     *.xz)           unxz    "$1" ;;
     *.7z)           7z x    "$1" ;;
-    *) echo "Unknown archive: $1" ;;
+    *) echo "Unknown archive: $1"; return 1 ;;
   esac
 }
 

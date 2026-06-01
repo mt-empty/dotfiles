@@ -1,5 +1,9 @@
 # Main Zsh configuration
-export DOTFILES="$HOME"
+# Resolve the dotfiles repo location from this file's symlink
+_zrc="${(%):-%x}"
+[[ -L "$_zrc" ]] && _zrc="$(readlink "$_zrc")"
+export DOTFILES="${_zrc:h}"
+unset _zrc
 
 # History
 HISTSIZE=50000
@@ -16,7 +20,7 @@ fi
 # Source platform-specific config
 if [[ "$OSTYPE" == "darwin"* ]]; then
   source "$DOTFILES/zshrc.d/macos.zsh"
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+elif [[ "$OSTYPE" == linux* ]]; then
   source "$DOTFILES/zshrc.d/ubuntu.zsh"
 fi
 
@@ -25,7 +29,7 @@ source "$DOTFILES/zshrc.d/aliases.zsh"
 source "$DOTFILES/zshrc.d/functions.zsh"
 
 # Source local overrides if present
-if [[ -f "$DOTFILES/.zshrc.local" ]]; then
-  source "$DOTFILES/.zshrc.local"
+if [[ -f "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
 fi
 

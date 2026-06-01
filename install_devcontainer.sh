@@ -52,7 +52,11 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     # Ensure zsh is available — many base images don't include it
     if ! command -v zsh &>/dev/null; then
         echo ">>> zsh not found, installing..."
-        sudo apt-get install -y zsh
+        if command -v sudo &>/dev/null; then
+            sudo apt-get install -y zsh
+        else
+            apt-get install -y zsh
+        fi
     fi
     OMZSCRIPT=$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) \
       || { echo "ERROR: Failed to download Oh My Zsh installer"; exit 1; }

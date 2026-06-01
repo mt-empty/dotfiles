@@ -17,8 +17,15 @@ EXTENSIONS=(
 # Detect OS and Firefox profile location
 if [[ "$OSTYPE" == "darwin"* ]]; then
   FIREFOX_PROFILES="$HOME/Library/Application Support/Firefox/Profiles"
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  FIREFOX_PROFILES="$HOME/.mozilla/firefox"
+elif [[ "$OSTYPE" == linux* ]]; then
+  # Probe all known Firefox profile locations in priority order
+  if [[ -d "$HOME/snap/firefox/common/.mozilla/firefox" ]]; then
+    FIREFOX_PROFILES="$HOME/snap/firefox/common/.mozilla/firefox"
+  elif [[ -d "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox" ]]; then
+    FIREFOX_PROFILES="$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox"
+  else
+    FIREFOX_PROFILES="$HOME/.mozilla/firefox"
+  fi
 else
   echo "Unsupported OS: $OSTYPE"
   exit 1
@@ -30,8 +37,9 @@ if [ ! -d "$FIREFOX_PROFILES" ]; then
   exit 1
 fi
 
-# Find default profile
-PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d \( -name "*.default-release" -o -name "*.default" \) | head -1)
+# Find default profile — prefer *.default-release (modern release channel) over *.default
+PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d -name "*.default-release" | head -1)
+[ -z "$PROFILE" ] && PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d -name "*.default" | head -1)
 
 if [ -z "$PROFILE" ]; then
   echo "No Firefox profile found. Please run Firefox at least once."
@@ -48,6 +56,7 @@ if [ -f "$PROFILE/user.js" ]; then
 fi
 
 # Apply user.js
+[ -f "$FIREFOX_CONFIG" ] || { echo "ERROR: source file not found: $FIREFOX_CONFIG"; exit 1; }
 cp "$FIREFOX_CONFIG" "$PROFILE/user.js"
 echo "user.js installed."
 
