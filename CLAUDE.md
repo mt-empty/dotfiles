@@ -32,7 +32,7 @@ zsh -n .zshrc zshrc.d/ubuntu.zsh zshrc.d/macos.zsh zshrc.d/aliases.zsh zshrc.d/f
 
 **App configs under `.config/`** — each tool has a subdirectory (e.g. `.config/ghostty/`, `.config/lazygit/`). `install.sh` creates the target `mkdir -p` and symlinks the file. To add a new tool, add a `lnk` call in both `install.sh` and `install_devcontainer.sh` if it's container-relevant.
 
-**Claude global config** — `.claude.json` is symlinked to `~/.claude.json`; `.config/claude/CLAUDE.md` is symlinked to `~/.claude/CLAUDE.md` (browser automation instructions for the Claude agent).
+**Agent config** — `.config/agent/mcp.json` is the canonical MCP server list, symlinked to `~/.claude.json` and `~/.kiro/settings/mcp.json`. Skills live project-locally in `.claude/skills/`.
 
 **VS Code** — `.config/vscode/settings.json` → `~/.config/Code/User/settings.json`; `.config/vscode/mcp.json` provides MCP server config for VS Code Copilot.
 
