@@ -34,10 +34,8 @@ lnk "$DOTFILES_DIR/.lazygit.yml" "$HOME/.config/lazygit/config.yml"
 mkdir -p "$HOME/.config/nvim"
 lnk "$DOTFILES_DIR/.nvimrc" "$HOME/.config/nvim/init.vim"
 
-# Claude global config
-lnk "$DOTFILES_DIR/.claude.json" .claude.json
-mkdir -p "$HOME/.claude"
-lnk "$DOTFILES_DIR/.config/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+# MCP config
+lnk "$DOTFILES_DIR/.config/agent/mcp.json" "$HOME/.claude.json"
 
 # VS Code user settings (makes dotfiles.repository + dotfiles.installCommand active on the host)
 mkdir -p "$HOME/.config/Code/User"
