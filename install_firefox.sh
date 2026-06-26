@@ -38,8 +38,8 @@ if [ ! -d "$FIREFOX_PROFILES" ]; then
 fi
 
 # Find default profile — prefer *.default-release (modern release channel) over *.default
-PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d -name "*.default-release" | head -1)
-[ -z "$PROFILE" ] && PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d -name "*.default" | head -1)
+PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d -name "*.default-release" | sort | head -1)
+[ -z "$PROFILE" ] && PROFILE=$(find "$FIREFOX_PROFILES" -maxdepth 1 -type d -name "*.default" | sort | head -1)
 
 if [ -z "$PROFILE" ]; then
   echo "No Firefox profile found. Please run Firefox at least once."
@@ -48,6 +48,9 @@ fi
 
 echo "Using Firefox profile: $PROFILE"
 
+# Apply user.js
+[ -f "$FIREFOX_CONFIG" ] || { echo "ERROR: source file not found: $FIREFOX_CONFIG"; exit 1; }
+
 # Backup existing user.js
 if [ -f "$PROFILE/user.js" ]; then
   BACKUP="$PROFILE/user.js.backup.$(date +%s)"
@@ -55,8 +58,6 @@ if [ -f "$PROFILE/user.js" ]; then
   echo "Backed up existing user.js to: $BACKUP"
 fi
 
-# Apply user.js
-[ -f "$FIREFOX_CONFIG" ] || { echo "ERROR: source file not found: $FIREFOX_CONFIG"; exit 1; }
 cp "$FIREFOX_CONFIG" "$PROFILE/user.js"
 echo "user.js installed."
 
@@ -65,7 +66,7 @@ echo ""
 echo "Install these Firefox extensions manually:"
 for ext in "${EXTENSIONS[@]}"; do
   name="${ext%%:*}"
-  url="${ext##*:}"
+  url="${ext#*:}"
   echo "  $name"
   echo "    $url"
 done

@@ -1,9 +1,6 @@
 # Main Zsh configuration
 # Resolve the dotfiles repo location from this file's symlink
-_zrc="${(%):-%x}"
-[[ -L "$_zrc" ]] && _zrc="$(readlink "$_zrc")"
-export DOTFILES="${_zrc:h}"
-unset _zrc
+export DOTFILES="${${(%):-%x}:A:h}"
 
 # History
 HISTSIZE=50000

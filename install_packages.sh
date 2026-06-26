@@ -13,7 +13,7 @@ if [[ "$OS" == "Darwin" ]]; then
   fi
 elif [[ "$OS" == "Linux" ]]; then
   MANAGER="apt"
-  sudo apt update
+  sudo apt update || echo "WARNING: apt update failed, package list may be stale"
 else
   echo "Unsupported OS: $OS"
   exit 1
@@ -35,7 +35,10 @@ for i in $SELECTION; do
   if [[ "$MANAGER" == "brew" ]]; then
     brew install "$PKG" || echo "WARNING: failed to install $PKG, continuing..."
   else
-    sudo apt install -y "$PKG" || echo "WARNING: failed to install $PKG, continuing..."
+    APT_PKG="$PKG"
+    [[ "$PKG" == "node" ]] && APT_PKG="nodejs"
+    [[ "$PKG" == "docker" ]] && APT_PKG="docker.io"
+    sudo apt install -y "$APT_PKG" || echo "WARNING: failed to install $APT_PKG, continuing..."
   fi
 done
 

@@ -6,7 +6,7 @@ cd "$HOME"
 
 # Helper: create symlink with logging. Backs up any real file before replacing it.
 lnk() {
-    if [ -f "$2" ] && [ ! -L "$2" ]; then
+    if [ -e "$2" ] && [ ! -L "$2" ]; then
         BACKUP="$2.bak.$(date +%s)"
         echo "  WARNING: backing up existing file $2 → $BACKUP"
         mv "$2" "$BACKUP"
@@ -14,7 +14,15 @@ lnk() {
     echo "  symlink: $1 → $2"
     ln -sfn "$1" "$2"
 }
-lnkd() { echo "  symlink: $1/ → $2/"; ln -snf "$1" "$2"; }
+lnkd() {
+    if [ -d "$2" ] && [ ! -L "$2" ]; then
+        BACKUP="$2.bak.$(date +%s)"
+        echo "  WARNING: backing up existing directory $2 → $BACKUP"
+        mv "$2" "$BACKUP"
+    fi
+    echo "  symlink: $1/ → $2/"
+    ln -snf "$1" "$2"
+}
 
 # Symlink dotfiles
 echo "Linking dotfiles..."
@@ -78,6 +86,8 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     || { echo "ERROR: Failed to download Oh My Zsh installer"; exit 1; }
   [ -n "$OMZSCRIPT" ] || { echo "ERROR: Oh My Zsh installer download returned empty"; exit 1; }
   sh -c "$OMZSCRIPT" "" --unattended
+  # OMZ's setup_zshrc() moves .zshrc aside and writes its template; restore ours.
+  lnk "$DOTFILES_DIR/.zshrc" .zshrc
 fi
 
 # Set Zsh as default shell

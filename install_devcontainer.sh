@@ -11,7 +11,7 @@ cd "$HOME"
 
 # Helper: create symlink with logging. Backs up any real file before replacing it.
 lnk() {
-    if [ -f "$2" ] && [ ! -L "$2" ]; then
+    if [ -e "$2" ] && [ ! -L "$2" ]; then
         BACKUP="$2.bak.$(date +%s)"
         echo "  WARNING: backing up existing file $2 → $BACKUP"
         mv "$2" "$BACKUP"
@@ -19,7 +19,15 @@ lnk() {
     echo "  symlink: $1 → $2"
     ln -sfn "$1" "$2"
 }
-lnkd() { echo "  symlink: $1/ → $2/"; ln -snf "$1" "$2"; }
+lnkd() {
+    if [ -d "$2" ] && [ ! -L "$2" ]; then
+        BACKUP="$2.bak.$(date +%s)"
+        echo "  WARNING: backing up existing directory $2 → $BACKUP"
+        mv "$2" "$BACKUP"
+    fi
+    echo "  symlink: $1/ → $2/"
+    ln -snf "$1" "$2"
+}
 
 echo ">>> Linking dotfiles..."
 lnk "$DOTFILES_DIR/.zshrc"       .zshrc
@@ -51,15 +59,17 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     if ! command -v zsh &>/dev/null; then
         echo ">>> zsh not found, installing..."
         if command -v sudo &>/dev/null; then
-            sudo apt-get install -y zsh
+            sudo apt-get update -y && sudo apt-get install -y zsh
         else
-            apt-get install -y zsh
+            apt-get update -y && apt-get install -y zsh
         fi
     fi
     OMZSCRIPT=$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) \
       || { echo "ERROR: Failed to download Oh My Zsh installer"; exit 1; }
     [ -n "$OMZSCRIPT" ] || { echo "ERROR: Oh My Zsh installer download returned empty"; exit 1; }
     sh -c "$OMZSCRIPT" "" --unattended
+    # OMZ's setup_zshrc() moves .zshrc aside and writes its template; restore ours.
+    lnk "$DOTFILES_DIR/.zshrc" .zshrc
 fi
 
 echo ">>> Dotfiles container bootstrap complete."

@@ -1,6 +1,6 @@
 # fzf shell integration
 if command -v fzf &>/dev/null; then
-  if fzf --version 2>/dev/null | awk '{split($1,v,"."); exit !(v[1]>0 || v[2]>=48)}'; then
+  if fzf --version 2>/dev/null | awk '{split($1,v,"."); exit !(v[1]>0 || v[2]>=48)} END{if(NR==0) exit 1}'; then
     source <(fzf --zsh)
   elif [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
     source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -17,6 +17,7 @@ if command -v fd &>/dev/null; then
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 else
   export FZF_DEFAULT_COMMAND='find . -type f -not -path "*/\.git/*"'
+  unset FZF_CTRL_T_COMMAND
 fi
 
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'

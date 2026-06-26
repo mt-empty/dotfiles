@@ -1,7 +1,10 @@
 # Utility functions (all platforms)
 
 # Create a directory and cd into it
-mkcd() { mkdir -p "$1" && cd "$1"; }
+mkcd() {
+  [ -z "$1" ] && { echo "usage: mkcd <dir>"; return 1; }
+  mkdir -p "$1" && cd "$1"
+}
 
 # Extract any common archive format
 extract() {
@@ -14,7 +17,7 @@ extract() {
     *.zip)          unzip   "$1" ;;
     *.gz)           gunzip  "$1" ;;
     *.bz2)          bunzip2 "$1" ;;
-    *.xz)           unxz    "$1" ;;
+    *.xz)           xz -d   "$1" ;;
     *.7z)           7z x    "$1" ;;
     *) echo "Unknown archive: $1"; return 1 ;;
   esac
@@ -22,27 +25,31 @@ extract() {
 
 # Update all available package managers (cross-platform)
 up() {
+  local _failed=0
+
   # apt (Linux, requires sudo)
   if command -v apt &>/dev/null; then
     echo "==> apt"
-    sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+    sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y || _failed=1
   fi
 
   # flatpak (no sudo needed)
   if command -v flatpak &>/dev/null; then
     echo "==> flatpak"
-    flatpak update -y
+    flatpak update -y || _failed=1
   fi
 
   # snap (requires sudo)
   if command -v snap &>/dev/null; then
     echo "==> snap"
-    sudo snap refresh
+    sudo snap refresh || _failed=1
   fi
 
   # brew (no sudo needed; works on Linux and macOS)
   if command -v brew &>/dev/null; then
     echo "==> brew"
-    brew update && brew upgrade
+    brew update && brew upgrade || _failed=1
   fi
+
+  return $_failed
 }
