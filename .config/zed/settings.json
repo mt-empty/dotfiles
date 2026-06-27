@@ -3,12 +3,50 @@
     "format_on_save": "on",
     "autosave": "on_focus_change",
     "vim_mode": false,
-    "ui_font_size": 14,
-    "buffer_font_size": 14,
+    "ui_font_size": 16,
+    "buffer_font_size": 15,
     "terminal": {
         "shell": {
             "program": "zsh"
         },
         "font_size": 14
+    },
+    "agent": {
+        "default_model": {
+            "provider": "qwen3-local",
+            "model": "qwen3-local",
+            "enable_thinking": false
+        },
+        "dock": "right",
+        "favorite_models": [],
+        "model_parameters": []
+    },
+    "git_panel": {
+        "tree_view": true,
+        "dock": "left"
+    },
+    "language_models": {
+        "openai_compatible": {
+            "qwen3-local": {
+                "api_url": "http://127.0.0.1:8099/v1",
+                "available_models": [
+                    {
+                        "name": "qwen3-local",
+                        "display_name": "Qwen3-local",
+                        "max_tokens": 60000
+                    }
+                ]
+            },
+            "qwen3-container": {
+                "api_url": "http://host.docker.internal:8099/v1",
+                "available_models": [
+                    {
+                        "name": "qwen3-container",
+                        "display_name": "Qwen3-container",
+                        "max_tokens": 60000
+                    }
+                ]
+            }
+        }
     }
 }

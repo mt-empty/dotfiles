@@ -1,0 +1,20 @@
+{
+  "providers": {
+    "qwen3": {
+      "baseUrl": "http://host.docker.internal:8080/v1",
+      "api": "openai-completions",
+      "apiKey": "sk-local",
+      "models": [
+        {
+          "id": "qwen3-coder-next",
+          "name": "Qwen3-Coder-Next",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 60000,
+          "maxTokens": 4096,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    }
+  }
+}

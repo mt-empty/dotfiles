@@ -48,7 +48,25 @@ up() {
   # brew (no sudo needed; works on Linux and macOS)
   if command -v brew &>/dev/null; then
     echo "==> brew"
-    brew update && brew upgrade || _failed=1
+    brew update && brew upgrade && brew cleanup || _failed=1
+  fi
+
+  # oh-my-zsh
+  if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "==> oh-my-zsh"
+    "$HOME/.oh-my-zsh/tools/upgrade.sh" || _failed=1
+  fi
+
+  # tldr (tealdeer cache)
+  if command -v tldr &>/dev/null; then
+    echo "==> tldr"
+    tldr --update || _failed=1
+  fi
+
+  # rustup
+  if command -v rustup &>/dev/null; then
+    echo "==> rustup"
+    rustup update || _failed=1
   fi
 
   return $_failed

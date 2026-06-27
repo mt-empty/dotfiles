@@ -34,8 +34,6 @@ lnkd "$DOTFILES_DIR/.config/tmux" "$HOME/.config/tmux"
 lnk "$DOTFILES_DIR/.fzf.zsh" .fzf.zsh
 mkdir -p "$HOME/.config/bat"
 lnk "$DOTFILES_DIR/.config/bat/config" "$HOME/.config/bat/config"
-mkdir -p "$HOME/.config/lazygit"
-lnk "$DOTFILES_DIR/.config/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
 lnkd "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 
 # Symlink app configs under .config/
@@ -130,6 +128,17 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$OMZSCRIPT" "" --unattended || { echo "ERROR: Oh My Zsh installer failed"; exit 1; }
   # OMZ's setup_zshrc() moves .zshrc aside and writes its template; restore ours.
   lnk "$DOTFILES_DIR/.zshrc" .zshrc
+fi
+
+# Install Oh My Zsh community plugins
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+if [ -d "$HOME/.oh-my-zsh" ]; then
+  if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+  fi
+  if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+  fi
 fi
 
 # Set Zsh as default shell

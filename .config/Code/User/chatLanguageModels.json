@@ -1,0 +1,47 @@
+[
+	{
+		"name": "Copilot",
+		"vendor": "copilot",
+		"settings": {
+			"claude-sonnet-4.6": {
+				"reasoningEffort": "medium"
+			}
+		}
+	},
+	{
+		"name": "local-qwen3-coder-next",
+		"vendor": "customendpoint",
+		"apiType": "chat-completions",
+		"apiKey": "sk-local",
+		"models": [
+			{
+				"id": "qwen3-coder-next",
+				"name": "Qwen3-Coder-Next",
+				"url": "http://127.0.0.1:8080/v1/chat/completions",
+				"toolCalling": true,
+				"vision": false,
+				"maxInputTokens": 60000,
+				"maxOutputTokens": 4096,
+				"streaming": true
+			}
+		]
+	},
+	{
+		"name": "local-qwen3-coder-next - dev container",
+		"vendor": "customendpoint",
+		"apiType": "chat-completions",
+		"apiKey": "sk-local",
+		"models": [
+			{
+				"id": "qwen3-coder-next",
+				"name": "Qwen3-Coder-Next",
+				"url": "http://host.docker.internal:8080/v1/chat/completions",
+				"toolCalling": true,
+				"vision": false,
+				"maxInputTokens": 60000,
+				"maxOutputTokens": 4096,
+				"streaming": true
+			}
+		]
+	}
+]

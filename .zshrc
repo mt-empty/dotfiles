@@ -5,11 +5,12 @@ export DOTFILES="${${(%):-%x}:A:h}"
 # History
 HISTSIZE=50000
 SAVEHIST=50000
-setopt HIST_IGNORE_DUPS SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_VERIFY SHARE_HISTORY
 
 # Oh My Zsh — load first so user aliases/functions defined below override OMZ defaults
 export ZSH="$HOME/.oh-my-zsh"
-plugins=(git z fzf)
+plugins=(git fzf zsh-autosuggestions zsh-syntax-highlighting)
+ZSH_THEME=""
 if [ -d "$ZSH" ]; then
   source "$ZSH/oh-my-zsh.sh"
 fi
@@ -29,6 +30,15 @@ source "$DOTFILES/zshrc.d/functions.zsh"
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 [[ :$PATH: != *":$PNPM_HOME:"* ]] && export PATH="$PNPM_HOME:$PATH"
+
+# zoxide (smarter cd)
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
+
+# fnm (Node version manager)
+command -v fnm &>/dev/null && eval "$(fnm env --use-on-cd --shell zsh)"
+
+# starship prompt (must come after OMZ so it wins the prompt)
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # Source local overrides if present
 if [[ -f "$HOME/.zshrc.local" ]]; then

@@ -3,14 +3,14 @@
 - git
 - zsh
 - oh-my-zsh
-- vim
+  - zsh-autosuggestions (plugin)
+  - zsh-syntax-highlighting (plugin)
 - neovim
 - fzf
 - brew
 - gh
 - vscode
-- tealdear (tldr)
-- acli
+- tealdeer (tldr)
 - firefox
   - uBlock Origin (extension)
   - KeePassXC-Browser (extension)
@@ -22,18 +22,23 @@
 - tmux
 - ripgrep
 - bat
-- exa
-- lazygit
-- z
+- eza
+- btop
+- zoxide
+- starship (prompt)
+- delta (git pager)
+- dust (disk usage)
 - fd
 - curl
 - wget
 - jq
-- htop
 - tree
-- node
+- fnm (Node version manager)
 - python3
+- uv (Python environment manager)
 - docker
+- difftastic (difft)
+- rust (via rustup)
 - gpg
 - ssh
 

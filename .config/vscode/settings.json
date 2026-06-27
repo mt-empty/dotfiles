@@ -1,4 +1,7 @@
 {
+    "telemetry.telemetryLevel": "off",
+    "telemetry.feedback.enabled": false,
+    "telemetry.editStats.enabled": false,
     "editor.tabSize": 4,
     "editor.rulers": [80, 120],
     "editor.formatOnSave": true,
@@ -8,5 +11,29 @@
     "terminal.integrated.defaultProfile.linux": "zsh",
     "terminal.integrated.defaultProfile.osx": "zsh",
     "dotfiles.repository": "mt-empty/dotfiles",
-    "dotfiles.installCommand": "install_devcontainer.sh"
+    "dotfiles.installCommand": "install_devcontainer.sh",
+    "scm.defaultViewMode": "tree",
+    "git.blame.editorDecoration.enabled": true,
+    "git.blame.statusBarItem.enabled": true,
+    "editor.wordWrap": "on",
+    "search.exclude": {
+        "**/target": true
+    },
+    "chat.tools.urls.autoApprove": {
+        "https://code.visualstudio.com": true,
+        "https://github.com/microsoft/vscode/wiki/*": true,
+        "https://github.com": {
+            "approveRequest": false,
+            "approveResponse": true
+        },
+        "https://docs.rs/reqwest/latest/reqwest/blocking/struct.ClientBuilder.html#method.timeout": {
+            "approveRequest": false,
+            "approveResponse": true
+        },
+        "https://crates.io": true,
+        "https://pi.dev": {
+            "approveRequest": true,
+            "approveResponse": false
+        }
+    }
 }

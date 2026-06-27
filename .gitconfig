@@ -4,6 +4,12 @@
 	editor = nvim
 	autocrlf = input
 	whitespace = fix
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = true
 [init]
 	defaultBranch = main
 [push]
@@ -14,6 +20,10 @@
 	conflictstyle = zdiff3
 [diff]
 	external = difft
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
 [commit]
 	gpgsign = true
 [rerere]
