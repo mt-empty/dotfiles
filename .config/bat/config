@@ -1,3 +1,2 @@
-# bat config (symlinked from .bat.conf if desired)
 --theme="TwoDark"
---style="numbers,changes"
+--style="numbers,changes,header,grid"

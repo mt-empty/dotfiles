@@ -1,4 +1,6 @@
 .zshrc.local
+.gitconfig.local
+.config/nvim/lazy-lock.json
 .vscode/settings.json
 .vscode/extensions.json
 .config/gh/hosts.yml

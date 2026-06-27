@@ -1,3 +1,6 @@
-# ripgrep config (add your customizations here)
 --hidden
---glob '!.git/'
+--smart-case
+--follow
+--glob=!.git/
+--glob=!node_modules/
+--glob=!.venv/

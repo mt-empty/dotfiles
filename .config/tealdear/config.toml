@@ -1,2 +1,6 @@
-# tealdear (tldr) config
-# See https://dbrgn.github.io/tealdeer/config.html for options
+[updates]
+auto_update = true
+
+[display]
+compact = true
+use_pager = false

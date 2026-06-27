@@ -25,6 +25,11 @@ fi
 source "$DOTFILES/zshrc.d/aliases.zsh"
 source "$DOTFILES/zshrc.d/functions.zsh"
 
+# Tool env vars
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+[[ :$PATH: != *":$PNPM_HOME:"* ]] && export PATH="$PNPM_HOME:$PATH"
+
 # Source local overrides if present
 if [[ -f "$HOME/.zshrc.local" ]]; then
   source "$HOME/.zshrc.local"

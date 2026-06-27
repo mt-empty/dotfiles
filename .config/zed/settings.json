@@ -1,0 +1,14 @@
+{
+    "tab_size": 2,
+    "format_on_save": "on",
+    "autosave": "on_focus_change",
+    "vim_mode": false,
+    "ui_font_size": 14,
+    "buffer_font_size": 14,
+    "terminal": {
+        "shell": {
+            "program": "zsh"
+        },
+        "font_size": 14
+    }
+}

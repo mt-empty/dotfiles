@@ -1,13 +1,25 @@
 [color]
 	ui = auto
 [core]
-	editor = vim
+	editor = nvim
+	autocrlf = input
+	whitespace = fix
 [init]
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
 [pull]
 	rebase = true
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	external = difft
+[commit]
+	gpgsign = true
+[rerere]
+	enabled = true
+[help]
+	autocorrect = prompt
 [alias]
 	st = status
 	co = checkout
@@ -15,3 +27,10 @@
 	cm = commit
 	lg = log --oneline --graph --decorate --all
 	undo = reset HEAD~1 --mixed
+	sw = switch
+	rs = restore
+	swish = !sh -c 'git fetch $1 $2 && git switch $2' -
+	wip = commit -am "wip"
+	aliases = config --get-regexp alias
+[include]
+	path = ~/.gitconfig.local

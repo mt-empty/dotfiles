@@ -1,4 +1,9 @@
 # Readline config for better shell experience
 set completion-ignore-case on
 set show-all-if-ambiguous on
+set bell-style none
+set colored-stats on
+set colored-completion-prefix on
 TAB: menu-complete
+"\e[A": history-search-backward
+"\e[B": history-search-forward

@@ -1,5 +1,8 @@
 # Ghostty configuration
 
+# Shell integration
+shell-integration = zsh
+
 # Ctrl+Escape: explicitly ignored so it is never forwarded to the shell.
 # This prevents the ;5;27~ escape sequence leaking when Ghostty has focus.
 # The actual quake-toggle is handled externally by ~/.local/bin/ghostty-quake,

@@ -1,0 +1,24 @@
+// Linux-style Ctrl shortcuts — work on macOS alongside existing Cmd shortcuts,
+// and are identical to defaults on Linux (no conflict either way).
+[
+    // Editor
+    { "key": "ctrl+c", "command": "editor.action.clipboardCopyAction",  "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+x", "command": "editor.action.clipboardCutAction",   "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+v", "command": "editor.action.clipboardPasteAction", "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+z", "command": "undo",                               "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+shift+z", "command": "redo",                         "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+a", "command": "editor.action.selectAll",            "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+s", "command": "workbench.action.files.save",        "when": "!terminalFocus" },
+    { "key": "ctrl+w", "command": "workbench.action.closeActiveEditor", "when": "!terminalFocus" },
+    { "key": "ctrl+f", "command": "actions.find",                       "when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+h", "command": "editor.action.startFindReplaceAction","when": "editorTextFocus && !terminalFocus" },
+    { "key": "ctrl+p", "command": "workbench.action.quickOpen",         "when": "!terminalFocus" },
+    { "key": "ctrl+shift+p", "command": "workbench.action.showCommands" },
+    { "key": "ctrl+n", "command": "workbench.action.files.newUntitledFile", "when": "!terminalFocus" },
+    { "key": "ctrl+shift+n", "command": "workbench.action.newWindow" },
+
+    // Terminal — Linux style: Ctrl+Shift+C to copy, Ctrl+Shift+V to paste,
+    // Ctrl+C remains SIGINT (cancel) as on Linux.
+    { "key": "ctrl+shift+c", "command": "workbench.action.terminal.copySelection", "when": "terminalFocus && terminalTextSelected" },
+    { "key": "ctrl+shift+v", "command": "workbench.action.terminal.paste",         "when": "terminalFocus" }
+]

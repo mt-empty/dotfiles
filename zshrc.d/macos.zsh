@@ -8,4 +8,11 @@ elif [[ -x /usr/local/bin/brew ]]; then
 fi
 
 # Platform-specific aliases
-alias ll='ls -lAhG'  # -G for colour on macOS (no --color=auto)
+if command -v eza &>/dev/null; then
+  alias ls='eza --icons'
+  alias ll='eza -lah --icons'
+  alias la='eza -la --icons'
+  alias lt='eza --tree --icons'
+else
+  alias ll='ls -lAhG'
+fi

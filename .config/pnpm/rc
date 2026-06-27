@@ -1,0 +1,5 @@
+store-dir=~/.local/share/pnpm/store
+cache-dir=~/.cache/pnpm
+state-dir=~/.local/state/pnpm
+global-dir=~/.local/share/pnpm/global
+fund=false

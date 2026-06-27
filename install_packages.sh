@@ -1,9 +1,9 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 
 
 OS="$(uname)"
-PACKAGES=(git zsh vim neovim fzf gh tealdeer acli firefox kiro inav tmux ripgrep bat exa lazygit z fd curl wget jq htop tree node python3 docker gpg ssh)
+PACKAGES=(git zsh vim neovim fzf gh tealdeer acli firefox kiro inav tmux ripgrep bat eza lazygit z fd curl wget jq htop tree node pnpm python3 uv docker podman gpg ssh)
 
 if [[ "$OS" == "Darwin" ]]; then
   MANAGER="brew"
@@ -35,6 +35,19 @@ for i in $SELECTION; do
   if [[ "$MANAGER" == "brew" ]]; then
     brew install "$PKG" || echo "WARNING: failed to install $PKG, continuing..."
   else
+    # Tools with standalone Linux installers
+    if [[ "$PKG" == "uv" ]]; then
+      curl -LsSf https://astral.sh/uv/install.sh | sh || echo "WARNING: failed to install uv"
+      continue
+    fi
+    if [[ "$PKG" == "pnpm" ]]; then
+      if command -v npm &>/dev/null; then
+        npm install -g pnpm || echo "WARNING: failed to install pnpm"
+      else
+        curl -fsSL https://get.pnpm.io/install.sh | sh - || echo "WARNING: failed to install pnpm"
+      fi
+      continue
+    fi
     APT_PKG="$PKG"
     [[ "$PKG" == "node" ]] && APT_PKG="nodejs"
     [[ "$PKG" == "docker" ]] && APT_PKG="docker.io"

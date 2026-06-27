@@ -1,1 +1,2 @@
-# curl config (add your customizations here)
+--show-error
+--location

@@ -1,3 +1,5 @@
-# fd config (add your customizations here)
 --hidden
+--follow
 --exclude .git
+--exclude node_modules
+--exclude .venv

@@ -1,0 +1,28 @@
+// Linux-style Ctrl shortcuts for macOS.
+// On macOS Zed defaults to Cmd; these add Ctrl equivalents so muscle memory
+// from Linux works without removing the existing Cmd shortcuts.
+[
+    {
+        "context": "Editor",
+        "bindings": {
+            "ctrl-c":       "editor::Copy",
+            "ctrl-x":       "editor::Cut",
+            "ctrl-v":       "editor::Paste",
+            "ctrl-z":       "editor::Undo",
+            "ctrl-shift-z": "editor::Redo",
+            "ctrl-a":       "editor::SelectAll",
+            "ctrl-s":       "workspace::Save",
+            "ctrl-f":       "buffer_search::Deploy",
+            "ctrl-w":       "pane::CloseActiveItem",
+            "ctrl-p":       "file_finder::Toggle",
+            "ctrl-shift-p": "command_palette::Toggle"
+        }
+    },
+    {
+        "context": "Terminal",
+        "bindings": {
+            "ctrl-shift-c": "terminal::Copy",
+            "ctrl-shift-v": "terminal::Paste"
+        }
+    }
+]

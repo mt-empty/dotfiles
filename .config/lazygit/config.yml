@@ -1,1 +1,8 @@
-# lazygit config (symlinked from .lazygit.yml if desired)
+gui:
+  showIcons: true
+  theme:
+    selectedLineBgColor:
+      - default
+git:
+  skipHookPrefix: wip
+  autoFetch: true
