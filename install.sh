@@ -40,6 +40,10 @@ lnkd "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 mkdir -p "$HOME/.config/ghostty"
 lnk "$DOTFILES_DIR/.config/ghostty/config" "$HOME/.config/ghostty/config"
 
+# Claude Code user settings
+mkdir -p "$HOME/.claude"
+lnk "$DOTFILES_DIR/.config/claude/settings.json" "$HOME/.claude/settings.json"
+
 # MCP config (shared across tools)
 lnk "$DOTFILES_DIR/.config/agent/mcp.json" "$HOME/.claude.json"
 mkdir -p "$HOME/.kiro/settings"
