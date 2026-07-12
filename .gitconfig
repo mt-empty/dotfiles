@@ -21,9 +21,7 @@
 [diff]
 	external = difft
 [gpg]
-	format = ssh
-[gpg "ssh"]
-	allowedSignersFile = ~/.ssh/allowed_signers
+	format = openpgp
 [commit]
 	gpgsign = true
 [rerere]

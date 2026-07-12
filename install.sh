@@ -20,6 +20,7 @@ lnkd() {
         echo "  WARNING: backing up existing path $2 → $BACKUP"
         mv "$2" "$BACKUP"
     fi
+    mkdir -p "$(dirname "$2")"
     echo "  symlink: $1/ → $2/"
     ln -snf "$1" "$2"
 }

@@ -25,6 +25,7 @@ lnkd() {
         echo "  WARNING: backing up existing path $2 → $BACKUP"
         mv "$2" "$BACKUP"
     fi
+    mkdir -p "$(dirname "$2")"
     echo "  symlink: $1/ → $2/"
     ln -snf "$1" "$2"
 }
@@ -60,6 +61,27 @@ lnk "$DOTFILES_DIR/.config/fd/config" "$HOME/.config/fd/config"
 mkdir -p "$HOME/.config/tealdeer"
 lnk "$DOTFILES_DIR/.config/tealdeer/config.toml" "$HOME/.config/tealdeer/config.toml"
 lnk "$DOTFILES_DIR/.config/curl/config" "$HOME/.curlrc"
+
+# delta (git pager referenced by .gitconfig — install if missing)
+if ! command -v delta &>/dev/null; then
+    echo ">>> Installing delta..."
+    arch="$(uname -m)"
+    latest_url="$(
+        curl -fsSL https://api.github.com/repos/dandavison/delta/releases/latest \
+        | grep browser_download_url \
+        | grep "${arch}-unknown-linux-gnu.tar.gz" \
+        | cut -d '"' -f 4
+    )"
+    if [ -n "$latest_url" ]; then
+        tmpdir="$(mktemp -d)"
+        curl -fsSL "$latest_url" -o "$tmpdir/delta.tar.gz"
+        tar -xzf "$tmpdir/delta.tar.gz" -C "$tmpdir"
+        find "$tmpdir" -name "delta" -type f -exec sudo install -m 755 {} /usr/local/bin/delta \;
+        rm -rf "$tmpdir"
+    else
+        echo "WARNING: could not resolve delta download URL (GitHub API rate limit?)"
+    fi
+fi
 
 # pnpm
 mkdir -p "$HOME/.config/pnpm"
