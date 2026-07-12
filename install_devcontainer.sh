@@ -34,6 +34,24 @@ echo ">>> Linking dotfiles..."
 lnk "$DOTFILES_DIR/.zshrc"       .zshrc
 lnk "$DOTFILES_DIR/.vimrc"       .vimrc
 lnk "$DOTFILES_DIR/.inputrc"     .inputrc
+
+# .gitconfig defers identity to the git-ignored ~/.gitconfig.local (see
+# [include] below) so no name/email/key ever lands in this tracked repo. On a
+# devcontainer, VS Code auto-mounts the host's ~/.gitconfig before this script
+# runs, so harvest identity from it here — before the symlink below replaces
+# it — rather than requiring it to be set up by hand on every fresh container.
+if [ ! -f "$HOME/.gitconfig.local" ] && [ -f "$HOME/.gitconfig" ]; then
+    existing_name="$(git config -f "$HOME/.gitconfig" --get user.name 2>/dev/null || true)"
+    existing_email="$(git config -f "$HOME/.gitconfig" --get user.email 2>/dev/null || true)"
+    if [ -n "$existing_name" ] && [ -n "$existing_email" ]; then
+        echo ">>> Seeding ~/.gitconfig.local from existing git identity ($existing_name <$existing_email>)"
+        {
+            echo "[user]"
+            echo "    name = $existing_name"
+            echo "    email = $existing_email"
+        } > "$HOME/.gitconfig.local"
+    fi
+fi
 lnk "$DOTFILES_DIR/.gitconfig"   .gitconfig
 lnkd "$DOTFILES_DIR/.config/tmux" "$HOME/.config/tmux"
 lnk "$DOTFILES_DIR/.fzf.zsh"     .fzf.zsh
