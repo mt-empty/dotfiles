@@ -62,6 +62,47 @@ mkdir -p "$HOME/.config/tealdeer"
 lnk "$DOTFILES_DIR/.config/tealdeer/config.toml" "$HOME/.config/tealdeer/config.toml"
 lnk "$DOTFILES_DIR/.config/curl/config" "$HOME/.curlrc"
 
+# nvim (git core.editor in .gitconfig — install if missing)
+if ! command -v nvim &>/dev/null; then
+    echo ">>> Installing neovim..."
+    if command -v sudo &>/dev/null; then
+        sudo apt-get update -y && sudo apt-get install -y neovim
+    else
+        apt-get update -y && apt-get install -y neovim
+    fi
+fi
+
+# gpg (commit.gpgsign in .gitconfig — install if missing)
+if ! command -v gpg &>/dev/null; then
+    echo ">>> Installing gnupg..."
+    if command -v sudo &>/dev/null; then
+        sudo apt-get update -y && sudo apt-get install -y gnupg
+    else
+        apt-get update -y && apt-get install -y gnupg
+    fi
+fi
+
+# difft (git diff.external in .gitconfig — install if missing)
+if ! command -v difft &>/dev/null; then
+    echo ">>> Installing difftastic..."
+    arch="$(uname -m)"
+    latest_url="$(
+        curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest \
+        | grep browser_download_url \
+        | grep "${arch}-unknown-linux-gnu.tar.gz" \
+        | cut -d '"' -f 4
+    )"
+    if [ -n "$latest_url" ]; then
+        tmpdir="$(mktemp -d)"
+        curl -fsSL "$latest_url" -o "$tmpdir/difft.tar.gz"
+        tar -xzf "$tmpdir/difft.tar.gz" -C "$tmpdir"
+        sudo install -m 755 "$tmpdir/difft" /usr/local/bin/difft
+        rm -rf "$tmpdir"
+    else
+        echo "WARNING: could not resolve difft download URL (GitHub API rate limit?)"
+    fi
+fi
+
 # delta (git pager referenced by .gitconfig — install if missing)
 if ! command -v delta &>/dev/null; then
     echo ">>> Installing delta..."
