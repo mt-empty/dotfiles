@@ -37,15 +37,17 @@ lnk "$DOTFILES_DIR/.inputrc"     .inputrc
 
 # .gitconfig defers identity to the git-ignored ~/.gitconfig.local (see
 # [include] below) so no name/email/key ever lands in this tracked repo. The
-# "dotfiles" devcontainer feature bind-mounts the host's real ~/.gitconfig
-# read-only at /tmp/host-gitconfig (VS Code's own "copy .gitconfig into the
-# container on startup" behavior is undocumented in its exact timing/
-# conditions and empirically did not populate $HOME/.gitconfig before this
-# script ran) — harvest identity from that fixed mount if present, before the
+# "dotfiles" devcontainer feature bind-mounts the host's real ~/.gitconfig at
+# /etc/host-gitconfig (VS Code's own "copy .gitconfig into the container on
+# startup" behavior is undocumented in its exact timing/conditions and
+# empirically did not populate $HOME/.gitconfig before this script ran —
+# and /tmp specifically isn't safe: docker-in-docker's privileged init
+# remounts a fresh tmpfs over /tmp, silently shadowing anything bind-mounted
+# there) — harvest identity from that fixed mount if present, before the
 # symlink below replaces ~/.gitconfig.
-if [ ! -f "$HOME/.gitconfig.local" ] && [ -f /tmp/host-gitconfig ]; then
-    existing_name="$(git config -f /tmp/host-gitconfig --get user.name 2>/dev/null || true)"
-    existing_email="$(git config -f /tmp/host-gitconfig --get user.email 2>/dev/null || true)"
+if [ ! -f "$HOME/.gitconfig.local" ] && [ -f /etc/host-gitconfig ]; then
+    existing_name="$(git config -f /etc/host-gitconfig --get user.name 2>/dev/null || true)"
+    existing_email="$(git config -f /etc/host-gitconfig --get user.email 2>/dev/null || true)"
     if [ -n "$existing_name" ] && [ -n "$existing_email" ]; then
         echo ">>> Seeding ~/.gitconfig.local from host git identity ($existing_name <$existing_email>)"
         {
